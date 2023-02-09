@@ -29,4 +29,3 @@ export async function postGames(req,res){
     }
 
 }
-// insert into produtos (nome,preco) values ('Macbook Pro 13"','1700000');
