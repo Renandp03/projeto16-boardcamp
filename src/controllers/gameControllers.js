@@ -16,11 +16,14 @@ export async function postGames(req,res){
 
     try {
 
-        const { name, image, stockTotal, pricePerDay} = req.body
+        const game = req.body
 
-        await db.query(`INSERT INTO games (name,image,stockTotal,pricePerDay) VALUES (${name},${image},${Number(stockTotal)},${Number(pricePerDay)});`)
+        await db.query(
+            `INSERT INTO games (name,image,"stockTotal","pricePerDay")
+             VALUES ($1,$2,$3,$4);`,
+             [game.name,game.image,Number(game.stockTotal),Number(game.pricePerDay)])
 
-        res.status(201).send(ok)
+        res.status(201).send("ok")
 
     } catch (error) {
 
