@@ -6,9 +6,11 @@ export async function validateGame(req,res,next){
 
     try {
         
-        const gameExist = await db.query(`SELECT name FROM games WHERE name='${name}'`)
+        const gameExist = await db.query(`SELECT * FROM games WHERE name = '${name}';`)
 
-        if(gameExist) return res.status(409).send("jogo já existe")
+        console.log(gameExist.rows)
+
+        if(gameExist.rows[0]) return res.status(409).send("jogo já existe")
 
 
     } catch (error) {

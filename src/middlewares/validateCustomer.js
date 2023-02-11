@@ -9,7 +9,7 @@ export async function validateCustomer(req,res,next){
         
         const cpfExist = await db.query(`SELECT * FROM customers WHERE cpf='${cpf}';`)
 
-        if(!id && cpfExist) return res.status(409).send("dados inválidos")
+        if(!id && cpfExist.rows[0]) return res.status(409).send("dados inválidos")
 
         if(cpfExist.rows[0] && cpfExist.rows[0].id !== Number(id) ) return res.status(409).send("Existe um usuário com este cpf cadastrado")
 

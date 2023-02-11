@@ -16,7 +16,4 @@ customersRouter.post("/customers",validateSchema(customerSchema),validateCustome
 customersRouter.put("/customers/:id",validateSchema(customerSchema),validateCustomer,putCustomers)
 
 
-
-
-
 export default customersRouter
