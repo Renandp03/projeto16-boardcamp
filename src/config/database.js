@@ -12,9 +12,3 @@ const configDatabase = {
 if(process.env.MODE === "prod") configDatabase.ssl = true
 
 export const db = new Pool(configDatabase)
-
-
-
-// const connection = new Pool({
-//     connectionString: process.env.DATABASE_URL,
-//   });
