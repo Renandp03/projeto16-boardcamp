@@ -22,6 +22,8 @@ export async function getCustomersId(req,res){
         const SELECT = await db.query(`SELECT * FROM customers WHERE customers.id = $1;`,[id])
         const customer = SELECT.rows[0]
 
+        if(!customer) return res.status(404).send("Usuario não encontrado")
+
         res.send(customer)
             
         } catch (error) {

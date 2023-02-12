@@ -10,7 +10,7 @@ export async function getRentals(req,res){
                                         AS customer,
                                         json_build_object(
                                             'id',games.id,
-                                            'game',games.name
+                                            'name',games.name
                                         )
                                         AS game
                                         FROM rentals
@@ -36,7 +36,6 @@ export async function postRentals(req,res){
         const today = dayjs(new Date()).format("YYYY-MM-DD")
 
         const pricePerDay = await db.query(`SELECT "pricePerDay" FROM games WHERE id='${gameId}';`)
-        console.log(pricePerDay)
 
         await db.query(
             `INSERT INTO rentals 
