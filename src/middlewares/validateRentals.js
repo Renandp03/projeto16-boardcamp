@@ -6,10 +6,15 @@ export async function validateRentals(req,res,next){
 
     try {
         
-        const customerExist = await db.query(`SELECT * FROM customers WHERE customers.id=$1;`,[customerId])
-        const gameExist = await db.query(`SELECT * FROM games WHERE games.id=$1;`,[gameId])
+        const customer = await db.query(`SELECT name FROM customers WHERE customers.id=$1;`,[customerId])
+        const game = await db.query(`SELECT * FROM games WHERE games.id=$1;`,[gameId])
 
-        if(!customerExist.rows[0] || !gameExist.rows[0]) return res.status(400).send("Dados inválidos")
+        if(!customer.rows[0] || !game.rows[0]) return res.status(400).send("Dados inválidos")
+
+        const stock = await db.query(`SELECT * FROM rentals WHERE rentals."gameId"=$1;`,[gameId])
+
+        if(stock.rows.length >= game.rows[0].stockTotal) return res.status(400).send("jogo indisponível")
+
 
     } catch (error) {
         res.status(500).send(error.message)
