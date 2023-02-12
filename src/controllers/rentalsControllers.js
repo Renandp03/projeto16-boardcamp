@@ -51,3 +51,49 @@ export async function postRentals(req,res){
         res.status(500).send(error.message)
     }
 }
+
+export async function postRentalsId(req,res){
+    try {
+        
+        const { id } = req.params
+        const today = dayjs(new Date()).format("YYYY-MM-DD")
+
+        const { rows: rental } = await db.query(`SELECT * FROM rentals WHERE id = $1;`,[id])
+
+        const pricePerDay = (rental[0].originalPrice)/(rental[0].daysRented)
+
+        const delay = Number(dayjs(today).diff(dayjs(rental.rentDate),"day"))*Number(pricePerDay)
+
+        console.log(dayjs(today).diff(dayjs(rental.rentDate),"day"))
+
+
+        await db.query(`UPDATE rentals 
+                        SET "returnDate" = $1,
+                        "delayFee"= $2
+                        WHERE id=$3;`,[today,delay,id])
+
+        res.status(200).send("ok")
+
+
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
+
+
+// const { rows } = await db.query(`SELECT rentDate FROM rentals WHERE id=$1;`,[id])
+// const rentDate = dayjs(rows[0].rentDate)
+// const delay = dayjs(today).diff(rentDate,"day")
+
+// const pricePerDay = await db.query(`SELECT "pricePerDay" FROM games WHERE rentals."gameId"=games."pricePerDay"`)
+
+
+//tentativa 2 
+// const { rows } = await db.query(`SELECT rentals."rentDate",games."pricePerDay"
+// FROM rentals 
+// WHERE id=$1
+// JOIN games
+// ON rentals."gameId" = games.id`,[id])
+
+
+//const  delay = Number(dayjs(today).diff(dayjs(rentDate.rows[0].rentDate),"day"))*Number()
