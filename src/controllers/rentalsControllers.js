@@ -64,7 +64,10 @@ export async function postRentalsId(req,res){
 
         const delay = Number(dayjs(today).diff(dayjs(rental.rentDate),"day"))*Number(pricePerDay)
 
-        console.log(dayjs(today).diff(dayjs(rental.rentDate),"day"))
+        console.log(dayjs("2023-03-13").diff(dayjs(rental.rentDate),"day"))
+        console.log(pricePerDay)
+        console.log(delay)
+
 
 
         await db.query(`UPDATE rentals 
