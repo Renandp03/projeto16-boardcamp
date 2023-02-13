@@ -62,7 +62,9 @@ export async function postRentalsId(req,res){
 
         const pricePerDay = (rental[0].originalPrice)/(rental[0].daysRented)
 
-        const delay = Number(dayjs(today).diff(dayjs(rental.rentDate),"day"))*Number(pricePerDay)
+        const delay = Number(dayjs(today).diff(dayjs(rental[0].rentDate),"day"))*Number(pricePerDay)
+
+        console.log(delay)
 
         await db.query(`UPDATE rentals 
                         SET "returnDate" = $1,
