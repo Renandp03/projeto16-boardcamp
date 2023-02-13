@@ -64,12 +64,6 @@ export async function postRentalsId(req,res){
 
         const delay = Number(dayjs(today).diff(dayjs(rental.rentDate),"day"))*Number(pricePerDay)
 
-        console.log(dayjs("2023-03-13").diff(dayjs(rental.rentDate),"day"))
-        console.log(pricePerDay)
-        console.log(delay)
-
-
-
         await db.query(`UPDATE rentals 
                         SET "returnDate" = $1,
                         "delayFee"= $2
@@ -83,20 +77,17 @@ export async function postRentalsId(req,res){
     }
 }
 
+export async function deleteRentals(req,res){
 
-// const { rows } = await db.query(`SELECT rentDate FROM rentals WHERE id=$1;`,[id])
-// const rentDate = dayjs(rows[0].rentDate)
-// const delay = dayjs(today).diff(rentDate,"day")
+    const { id } = req.params
 
-// const pricePerDay = await db.query(`SELECT "pricePerDay" FROM games WHERE rentals."gameId"=games."pricePerDay"`)
+    try {
 
+        await db.query(`DELETE FROM rentals WHERE id = $1;`,[id])
 
-//tentativa 2 
-// const { rows } = await db.query(`SELECT rentals."rentDate",games."pricePerDay"
-// FROM rentals 
-// WHERE id=$1
-// JOIN games
-// ON rentals."gameId" = games.id`,[id])
-
-
-//const  delay = Number(dayjs(today).diff(dayjs(rentDate.rows[0].rentDate),"day"))*Number()
+        res.status(200).send("Deletado com sucesso.")
+        
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
